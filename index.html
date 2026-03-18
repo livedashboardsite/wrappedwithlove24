@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,6 +30,70 @@
     overflow-x: hidden;
   }
 
+  /* ── LOADER ── */
+  #loader {
+    position: fixed; inset: 0; z-index: 9999;
+    background: var(--brown-dark);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 2rem;
+    transition: opacity 0.7s ease, visibility 0.7s ease;
+  }
+
+  #loader.hide {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .loader-logo {
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    border: 2px solid rgba(196,149,106,0.3);
+    overflow: hidden;
+    animation: loaderPulse 1.5s ease-in-out infinite;
+  }
+
+  .loader-logo img { width: 100%; height: 100%; object-fit: cover; }
+
+  .loader-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; font-weight: 700;
+    color: var(--cream); letter-spacing: 0.05em;
+    overflow: hidden; white-space: nowrap;
+    width: 0;
+    animation: typewriterBrand 1.2s steps(22) 0.3s forwards;
+  }
+
+  .loader-tagline {
+    font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--brown-light); opacity: 0;
+    animation: fadeIn 0.6s ease 1.6s forwards;
+  }
+
+  .loader-bar-wrap {
+    width: 200px; height: 2px;
+    background: rgba(196,149,106,0.15);
+    border-radius: 2px; overflow: hidden;
+  }
+
+  .loader-bar {
+    height: 100%; background: var(--brown-light);
+    width: 0%; animation: loadBar 1.8s ease forwards;
+    border-radius: 2px;
+  }
+
+  @keyframes loaderPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(196,149,106,0.3); }
+    50% { box-shadow: 0 0 0 12px rgba(196,149,106,0); }
+  }
+  @keyframes typewriterBrand {
+    from { width: 0; } to { width: 22ch; }
+  }
+  @keyframes loadBar {
+    0% { width: 0%; } 100% { width: 100%; }
+  }
+
   /* ── NAV ── */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
@@ -37,78 +102,62 @@
     background: rgba(42,16,16,0.95);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(196,149,106,0.3);
+    transform: translateY(-100%);
+    animation: navDrop 0.6s ease 2.4s forwards;
   }
 
-  .nav-logo {
-    display: flex; align-items: center; gap: 0.8rem;
-  }
+  @keyframes navDrop { to { transform: translateY(0); } }
+
+  .nav-logo { display: flex; align-items: center; gap: 0.8rem; }
 
   .nav-logo img {
-    height: 48px; width: 48px;
-    object-fit: contain;
-    border-radius: 50%;
-    border: 2px solid rgba(196,149,106,0.4);
+    height: 48px; width: 48px; object-fit: contain;
+    border-radius: 50%; border: 2px solid rgba(196,149,106,0.4);
   }
 
   .nav-logo-text {
     font-family: 'Playfair Display', serif;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--cream);
-    line-height: 1.2;
+    font-size: 1.1rem; font-weight: 700;
+    color: var(--cream); line-height: 1.2;
   }
 
   .nav-logo-text span {
-    display: block;
-    font-size: 0.65rem;
-    font-weight: 400;
-    font-style: italic;
-    color: var(--brown-light);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    display: block; font-size: 0.65rem; font-weight: 400;
+    font-style: italic; color: var(--brown-light);
+    letter-spacing: 0.12em; text-transform: uppercase;
   }
 
   nav ul { list-style: none; display: flex; gap: 2.5rem; }
   nav ul a {
-    text-decoration: none;
-    font-size: 0.82rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(245,237,224,0.75);
-    transition: color 0.3s;
+    text-decoration: none; font-size: 0.82rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(245,237,224,0.75); transition: color 0.3s;
   }
   nav ul a:hover { color: var(--brown-light); }
 
   .nav-cta {
-    background: var(--brown-light) !important;
-    color: var(--brown-dark) !important;
-    padding: 0.5rem 1.4rem;
-    border-radius: 4px;
-    font-weight: 700 !important;
-    transition: background 0.3s !important;
+    background: var(--brown-light) !important; color: var(--brown-dark) !important;
+    padding: 0.5rem 1.4rem; border-radius: 4px;
+    font-weight: 700 !important; transition: background 0.3s !important;
   }
   .nav-cta:hover { background: var(--cream) !important; }
 
   /* ── HERO ── */
   .hero {
-    min-height: 100vh;
-    display: grid;
+    min-height: 100vh; display: grid;
     grid-template-columns: 1fr 1fr;
-    padding-top: 5rem;
-    background: var(--brown-dark);
+    padding-top: 5rem; background: var(--brown-dark);
   }
 
   .hero-left {
     display: flex; flex-direction: column; justify-content: center;
     padding: 5rem 3.5rem 5rem 5rem;
-    animation: fadeUp 1s ease forwards;
-    position: relative;
+    position: relative; opacity: 0;
+    animation: fadeUp 0.9s ease 2.6s forwards;
   }
 
   .hero-left::after {
-    content: '';
-    position: absolute; right: 0; top: 10%; bottom: 10%;
+    content: ''; position: absolute; right: 0; top: 10%; bottom: 10%;
     width: 1px;
     background: linear-gradient(to bottom, transparent, rgba(196,149,106,0.3), transparent);
   }
@@ -116,141 +165,127 @@
   .hero-tag {
     display: inline-flex; align-items: center; gap: 0.5rem;
     font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--brown-light);
-    margin-bottom: 1.8rem;
+    color: var(--brown-light); margin-bottom: 1.8rem;
   }
 
   .hero-tag::before, .hero-tag::after {
     content: ''; flex: 1; height: 1px;
-    background: rgba(196,149,106,0.4);
-    width: 30px;
+    background: rgba(196,149,106,0.4); width: 30px;
   }
 
   .hero h1 {
     font-family: 'Playfair Display', serif;
     font-size: clamp(2.8rem, 4.5vw, 4.5rem);
-    font-weight: 900;
-    line-height: 1.05;
-    color: var(--cream);
-    margin-bottom: 1.5rem;
+    font-weight: 900; line-height: 1.15;
+    color: var(--cream); margin-bottom: 1.5rem;
   }
 
-  .hero h1 em {
-    font-style: italic;
-    color: var(--brown-light);
+  .hero h1 em { font-style: italic; color: var(--brown-light); }
+
+  .typewriter {
+    overflow: hidden; white-space: nowrap;
+    width: 0; display: block;
   }
+
+  .tw1 { animation: tw1 0.8s steps(14) 3s forwards; }
+  .tw2 { animation: tw2 1s steps(19) 3.9s forwards; }
+
+  @keyframes tw1 { from { width: 0; } to { width: 14ch; } }
+  @keyframes tw2 { from { width: 0; } to { width: 19ch; } }
 
   .hero p {
-    font-size: 0.95rem;
-    color: rgba(245,237,224,0.65);
-    line-height: 1.85;
-    max-width: 400px;
-    margin-bottom: 2.5rem;
+    font-size: 0.95rem; color: rgba(245,237,224,0.65);
+    line-height: 1.85; max-width: 400px; margin-bottom: 2.5rem;
+    opacity: 0; animation: fadeUp 0.8s ease 5s forwards;
   }
 
-  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .hero-btns {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    opacity: 0; animation: fadeUp 0.8s ease 5.3s forwards;
+  }
 
   .btn-primary {
     display: inline-flex; align-items: center; gap: 0.7rem;
-    background: var(--brown-light);
-    color: var(--brown-dark);
-    padding: 0.9rem 2rem;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 0.88rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    transition: all 0.3s;
+    background: var(--brown-light); color: var(--brown-dark);
+    padding: 0.9rem 2rem; border-radius: 4px; text-decoration: none;
+    font-size: 0.88rem; font-weight: 700; letter-spacing: 0.05em;
+    text-transform: uppercase; transition: all 0.3s;
   }
   .btn-primary:hover { background: var(--cream); transform: translateY(-2px); }
 
   .btn-secondary {
     display: inline-flex; align-items: center; gap: 0.7rem;
     border: 1.5px solid rgba(196,149,106,0.5);
-    color: var(--brown-light);
-    padding: 0.9rem 2rem;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 0.88rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    transition: all 0.3s;
+    color: var(--brown-light); padding: 0.9rem 2rem; border-radius: 4px;
+    text-decoration: none; font-size: 0.88rem; font-weight: 700;
+    letter-spacing: 0.05em; text-transform: uppercase; transition: all 0.3s;
   }
   .btn-secondary:hover { border-color: var(--brown-light); color: var(--cream); }
 
   .hero-right {
-    position: relative;
-    display: flex; align-items: center; justify-content: center;
-    padding: 4rem;
-    overflow: hidden;
-    animation: fadeIn 1.2s ease forwards;
+    position: relative; display: flex; align-items: center; justify-content: center;
+    padding: 4rem; overflow: hidden;
+    opacity: 0; animation: fadeIn 1s ease 2.8s forwards;
   }
 
   .hero-right::before {
-    content: '';
-    position: absolute; inset: 0;
+    content: ''; position: absolute; inset: 0;
     background: radial-gradient(circle at center, rgba(196,149,106,0.12) 0%, transparent 70%);
   }
 
   .logo-display {
-    width: 340px; height: 340px;
-    border-radius: 50%;
+    width: 340px; height: 340px; border-radius: 50%;
     border: 2px solid rgba(196,149,106,0.2);
     display: flex; align-items: center; justify-content: center;
-    background: rgba(255,255,255,0.04);
-    position: relative;
+    background: rgba(255,255,255,0.04); position: relative;
   }
 
-  .logo-display img {
-    width: 300px; height: 300px;
-    object-fit: contain;
-    border-radius: 50%;
-  }
+  .logo-display img { width: 300px; height: 300px; object-fit: contain; border-radius: 50%; }
 
   .logo-display::before {
-    content: '';
-    position: absolute; inset: -15px;
-    border-radius: 50%;
+    content: ''; position: absolute; inset: -15px; border-radius: 50%;
     border: 1px dashed rgba(196,149,106,0.2);
     animation: spin 30s linear infinite;
   }
 
   .hero-float-badge {
-    position: absolute;
-    bottom: 3rem; left: 3rem;
+    position: absolute; bottom: 3rem; left: 3rem;
     background: rgba(196,149,106,0.15);
     border: 1px solid rgba(196,149,106,0.3);
-    border-radius: 8px;
-    padding: 1rem 1.4rem;
-    color: var(--cream);
+    border-radius: 8px; padding: 1rem 1.4rem; color: var(--cream);
+    opacity: 0; animation: fadeUp 0.8s ease 3.4s forwards;
   }
 
   .badge-num {
     font-family: 'Playfair Display', serif;
-    font-size: 2rem; font-weight: 900;
-    color: var(--brown-light);
-    line-height: 1;
+    font-size: 2rem; font-weight: 900; color: var(--brown-light); line-height: 1;
   }
 
-  .badge-label { font-size: 0.72rem; color: rgba(245,237,224,0.6); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.2rem; }
+  .badge-label {
+    font-size: 0.72rem; color: rgba(245,237,224,0.6);
+    letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.2rem;
+  }
 
   /* ── MARQUEE ── */
-  .marquee-strip {
-    background: var(--brown-light);
-    padding: 0.75rem 0;
-    overflow: hidden; white-space: nowrap;
-  }
-
+  .marquee-strip { background: var(--brown-light); padding: 0.75rem 0; overflow: hidden; white-space: nowrap; }
   .marquee-inner { display: inline-flex; animation: marquee 22s linear infinite; }
-
-  .marquee-item {
-    font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--brown-dark); padding: 0 2rem; font-weight: 700;
-  }
-
+  .marquee-item { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--brown-dark); padding: 0 2rem; font-weight: 700; }
   .marquee-dot { color: var(--brown); }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-left { opacity: 0; transform: translateX(-50px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal-left.visible { opacity: 1; transform: translateX(0); }
+  .reveal-right { opacity: 0; transform: translateX(50px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+  .delay-1 { transition-delay: 0.1s; }
+  .delay-2 { transition-delay: 0.2s; }
+  .delay-3 { transition-delay: 0.3s; }
+  .delay-4 { transition-delay: 0.4s; }
+  .delay-5 { transition-delay: 0.5s; }
+  .delay-6 { transition-delay: 0.6s; }
 
   /* ── SECTION SHARED ── */
   section { padding: 6rem 5rem; }
@@ -260,160 +295,68 @@
     color: var(--brown-light); margin-bottom: 0.8rem;
     display: flex; align-items: center; gap: 0.8rem;
   }
-
   .section-label::after { content: ''; flex: 1; height: 1px; background: rgba(196,149,106,0.3); max-width: 60px; }
 
   .section-title {
     font-family: 'Playfair Display', serif;
     font-size: clamp(2rem, 3vw, 3rem);
-    font-weight: 900; line-height: 1.15;
-    color: var(--text); margin-bottom: 1rem;
+    font-weight: 900; line-height: 1.15; color: var(--text); margin-bottom: 1rem;
   }
   .section-title em { font-style: italic; color: var(--brown-mid); }
 
   /* ── ABOUT ── */
-  .about {
-    background: var(--brown-dark);
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 5rem; align-items: center;
-  }
-
-  .about-img-wrap {
-    position: relative;
-    display: flex; align-items: center; justify-content: center;
-  }
-
+  .about { background: var(--brown-dark); display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .about-img-wrap { position: relative; display: flex; align-items: center; justify-content: center; }
   .about-img-box {
-    width: 100%; aspect-ratio: 1;
-    max-width: 380px;
-    border-radius: 8px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(196,149,106,0.25);
+    width: 100%; aspect-ratio: 1; max-width: 380px; border-radius: 8px;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(196,149,106,0.25);
     display: flex; align-items: center; justify-content: center;
-    flex-direction: column; gap: 0.8rem;
-    color: rgba(196,149,106,0.5);
-    font-size: 4rem;
-    position: relative;
-    overflow: hidden;
+    flex-direction: column; gap: 0.8rem; color: rgba(196,149,106,0.5);
+    font-size: 4rem; position: relative; overflow: hidden;
   }
-
   .about-img-box::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0;
-    height: 3px;
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
     background: linear-gradient(90deg, transparent, var(--brown-light), transparent);
   }
-
-  .about-placeholder-text {
-    font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
-    color: rgba(196,149,106,0.4);
-  }
-
-  .about-corner {
-    position: absolute; bottom: -1rem; right: -1rem;
-    width: 80px; height: 80px;
-    background: var(--brown-light);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 2rem;
-  }
-
   .about .section-title { color: var(--cream); }
   .about .section-label { color: var(--brown-light); }
-
-  .about p {
-    color: rgba(245,237,224,0.65);
-    line-height: 1.9; font-size: 0.93rem;
-    margin-bottom: 1.2rem;
-  }
-
-  .about-stats {
-    display: flex; gap: 3rem; margin-top: 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(196,149,106,0.2);
-  }
-
-  .stat-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.2rem; font-weight: 900;
-    color: var(--brown-light); line-height: 1;
-  }
-
+  .about p { color: rgba(245,237,224,0.65); line-height: 1.9; font-size: 0.93rem; margin-bottom: 1.2rem; }
+  .about-stats { display: flex; gap: 3rem; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(196,149,106,0.2); }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; color: var(--brown-light); line-height: 1; }
   .stat-label { font-size: 0.75rem; color: rgba(245,237,224,0.5); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 0.3rem; }
 
   /* ── PRODUCTS ── */
   .products { background: var(--cream-light); }
-
   .products-header { text-align: center; max-width: 520px; margin: 0 auto 4rem; }
   .products-header .section-label { justify-content: center; }
   .products-header .section-label::after { display: none; }
-
-  .products-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-  }
+  .products-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
 
   .product-card {
-    background: var(--white);
-    border-radius: 8px;
-    overflow: hidden;
+    background: var(--white); border-radius: 8px; overflow: hidden;
     transition: transform 0.4s, box-shadow 0.4s;
-    cursor: pointer;
-    border: 1px solid rgba(196,149,106,0.15);
+    cursor: pointer; border: 1px solid rgba(196,149,106,0.15);
   }
-
-  .product-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 50px rgba(42,16,16,0.15);
-  }
+  .product-card:hover { transform: translateY(-8px); box-shadow: 0 24px 60px rgba(42,16,16,0.18); }
 
   .product-img {
-    aspect-ratio: 1;
+    aspect-ratio: 1; overflow: hidden;
     background: linear-gradient(135deg, var(--cream) 0%, var(--beige) 100%);
-    display: flex; align-items: center; justify-content: center;
-    flex-direction: column; gap: 0.5rem;
-    font-size: 3.5rem;
-    position: relative;
   }
-
-  .product-img-label {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    text-align: center;
-    font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--brown-mid);
-    background: rgba(245,237,224,0.8);
-    padding: 0.5rem;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-
-  .product-card:hover .product-img-label { opacity: 1; }
+  .product-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+  .product-card:hover .product-img img { transform: scale(1.06); }
 
   .product-info { padding: 1.5rem; }
-
-  .product-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.2rem; font-weight: 700;
-    color: var(--brown-dark); margin-bottom: 0.5rem;
-  }
-
-  .product-desc {
-    font-size: 0.82rem; color: var(--text-soft);
-    line-height: 1.65; margin-bottom: 1.2rem;
-  }
+  .product-name { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--brown-dark); margin-bottom: 0.5rem; }
+  .product-desc { font-size: 0.82rem; color: var(--text-soft); line-height: 1.65; margin-bottom: 1.2rem; }
 
   .product-order-btn {
     display: inline-flex; align-items: center; gap: 0.5rem;
-    background: var(--brown-dark);
-    color: var(--cream);
-    padding: 0.6rem 1.3rem;
-    border-radius: 4px;
-    font-size: 0.78rem; font-weight: 700;
-    text-decoration: none;
-    letter-spacing: 0.08em; text-transform: uppercase;
-    transition: all 0.3s;
+    background: var(--brown-dark); color: var(--cream);
+    padding: 0.6rem 1.3rem; border-radius: 4px;
+    font-size: 0.78rem; font-weight: 700; text-decoration: none;
+    letter-spacing: 0.08em; text-transform: uppercase; transition: all 0.3s;
   }
-
   .product-order-btn:hover { background: var(--brown-light); color: var(--brown-dark); }
 
   /* ── HOW IT WORKS ── */
@@ -423,35 +366,16 @@
   .how-header { text-align: center; max-width: 480px; margin: 0 auto 4rem; }
   .how-header .section-label { justify-content: center; }
   .how-header .section-label::after { display: none; }
-
   .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
 
   .step {
     text-align: center; padding: 2rem 1.5rem;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(196,149,106,0.15);
-    border-radius: 8px;
-    transition: background 0.3s, border-color 0.3s;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(196,149,106,0.15);
+    border-radius: 8px; transition: background 0.3s, border-color 0.3s, transform 0.3s;
   }
-
-  .step:hover {
-    background: rgba(196,149,106,0.08);
-    border-color: rgba(196,149,106,0.35);
-  }
-
-  .step-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.5rem; font-weight: 900;
-    color: var(--brown-light); opacity: 0.5;
-    line-height: 1; margin-bottom: 1rem;
-  }
-
-  .step h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem; font-weight: 700;
-    color: var(--cream); margin-bottom: 0.6rem;
-  }
-
+  .step:hover { background: rgba(196,149,106,0.08); border-color: rgba(196,149,106,0.35); transform: translateY(-4px); }
+  .step-num { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 900; color: var(--brown-light); opacity: 0.5; line-height: 1; margin-bottom: 1rem; }
+  .step h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--cream); margin-bottom: 0.6rem; }
   .step p { font-size: 0.82rem; color: rgba(245,237,224,0.5); line-height: 1.7; }
 
   /* ── TESTIMONIALS ── */
@@ -459,113 +383,59 @@
   .testimonials-header { text-align: center; max-width: 460px; margin: 0 auto 4rem; }
   .testimonials-header .section-label { justify-content: center; }
   .testimonials-header .section-label::after { display: none; }
-
   .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
 
   .testi-card {
-    background: var(--white);
-    border-radius: 8px; padding: 2rem;
-    border: 1px solid rgba(196,149,106,0.2);
-    border-top: 3px solid var(--brown-light);
+    background: var(--white); border-radius: 8px; padding: 2rem;
+    border: 1px solid rgba(196,149,106,0.2); border-top: 3px solid var(--brown-light);
+    transition: transform 0.3s, box-shadow 0.3s;
   }
-
+  .testi-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(42,16,16,0.1); }
   .testi-stars { color: var(--brown-light); font-size: 0.9rem; margin-bottom: 1rem; letter-spacing: 0.1em; }
-
-  .testi-text {
-    font-family: 'Playfair Display', serif;
-    font-size: 1rem; font-style: italic;
-    color: var(--text); line-height: 1.7;
-    margin-bottom: 1.5rem;
-  }
-
+  .testi-text { font-family: 'Playfair Display', serif; font-size: 1rem; font-style: italic; color: var(--text); line-height: 1.7; margin-bottom: 1.5rem; }
   .testi-name { font-size: 0.78rem; font-weight: 700; color: var(--brown-mid); letter-spacing: 0.08em; text-transform: uppercase; }
 
   /* ── ORDER CTA ── */
-  .order-cta {
-    background: var(--brown-light);
-    text-align: center; padding: 6rem 5rem;
-    position: relative; overflow: hidden;
-  }
-
-  .order-cta::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%232a1010' fill-opacity='0.06'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-  }
-
-  .order-cta h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2.2rem, 4vw, 3.5rem);
-    font-weight: 900; color: var(--brown-dark);
-    margin-bottom: 1rem; position: relative; z-index: 1;
-  }
-
-  .order-cta p {
-    color: rgba(42,16,16,0.65);
-    font-size: 0.95rem; margin-bottom: 2.5rem;
-    position: relative; z-index: 1;
-  }
+  .order-cta { background: var(--brown-light); text-align: center; padding: 6rem 5rem; position: relative; overflow: hidden; }
+  .order-cta::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%232a1010' fill-opacity='0.06'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
+  .order-cta h2 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 4vw, 3.5rem); font-weight: 900; color: var(--brown-dark); margin-bottom: 1rem; position: relative; z-index: 1; }
+  .order-cta p { color: rgba(42,16,16,0.65); font-size: 0.95rem; margin-bottom: 2.5rem; position: relative; z-index: 1; }
 
   .wp-btn {
     display: inline-flex; align-items: center; gap: 0.8rem;
-    background: var(--brown-dark);
-    color: var(--cream);
-    padding: 1rem 2.5rem;
-    border-radius: 4px;
-    font-weight: 700; font-size: 0.9rem;
-    text-decoration: none;
-    letter-spacing: 0.08em; text-transform: uppercase;
-    transition: all 0.3s;
+    background: var(--brown-dark); color: var(--cream);
+    padding: 1rem 2.5rem; border-radius: 4px;
+    font-weight: 700; font-size: 0.9rem; text-decoration: none;
+    letter-spacing: 0.08em; text-transform: uppercase; transition: all 0.3s;
     position: relative; z-index: 1;
   }
-
   .wp-btn:hover { background: var(--brown); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(42,16,16,0.3); }
 
   .wp-icon {
-    width: 1.4rem; height: 1.4rem;
-    background: #25D366;
-    border-radius: 50%;
+    width: 1.4rem; height: 1.4rem; background: #25D366; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     color: white; font-size: 0.75rem; font-weight: 900;
   }
 
   /* ── FOOTER ── */
   footer {
-    background: var(--brown-dark);
-    color: rgba(245,237,224,0.5);
-    padding: 3rem 5rem;
-    display: flex; align-items: center; justify-content: space-between;
-    flex-wrap: wrap; gap: 1.5rem;
-    border-top: 1px solid rgba(196,149,106,0.2);
+    background: var(--brown-dark); color: rgba(245,237,224,0.5);
+    padding: 3rem 5rem; display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1.5rem; border-top: 1px solid rgba(196,149,106,0.2);
   }
-
   .footer-brand { display: flex; align-items: center; gap: 0.8rem; }
   .footer-brand img { height: 44px; width: 44px; object-fit: contain; border-radius: 50%; opacity: 0.9; }
-
-  .footer-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 1rem; color: var(--cream); font-weight: 700;
-  }
-
+  .footer-name { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--cream); font-weight: 700; }
   .footer-tagline { font-style: italic; color: var(--brown-light); font-size: 0.8rem; }
   .footer-text { font-size: 0.82rem; }
   .footer-text a { color: rgba(245,237,224,0.5); text-decoration: none; transition: color 0.3s; }
   .footer-text a:hover { color: var(--brown-light); }
 
-  /* ── ANIMATIONS ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; } to { opacity: 1; }
-  }
-  @keyframes spin {
-    from { transform: rotate(0deg); } to { transform: rotate(360deg); }
-  }
-  @keyframes marquee {
-    from { transform: translateX(0); } to { transform: translateX(-50%); }
-  }
+  /* ── BASE ANIMATIONS ── */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
   /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
@@ -593,6 +463,14 @@
 </head>
 <body>
 
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo"><img src="logo.jpeg" alt="Logo"></div>
+  <div class="loader-brand">Wrapped with Love 24</div>
+  <div class="loader-tagline">Gifts from the heart</div>
+  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+</div>
+
 <!-- NAV -->
 <nav>
   <div class="nav-logo">
@@ -614,15 +492,16 @@
 <section class="hero">
   <div class="hero-left">
     <div class="hero-tag">Handcrafted with love</div>
-    <h1>Your memories,<br>beautifully <em>gifted.</em></h1>
+    <h1>
+      <span class="typewriter tw1">Your memories,</span>
+      <span class="typewriter tw2">beautifully <em>gifted.</em></span>
+    </h1>
     <p>Wrapped with Love 24 creates personalized, handcrafted gifts tailored to your preferences — turning your cherished memories into something truly meaningful.</p>
     <div class="hero-btns">
-      <a href="https://wa.me/919404808850?text=Hi!%20I%20want%20to%20order%20a%20customized%20gift%20from%20Wrapped%20with%20Love%2024%20!" target="_blank" class="btn-primary">
+      <a href="https://wa.me/919404808850?text=Hi!%20I%20want%20to%20order%20a%20customized%20gift%20from%20Wrapped%20with%20Love%2024%20🎁" target="_blank" class="btn-primary">
         <span class="wp-icon">W</span> Order on WhatsApp
       </a>
-      <a href="#products" class="btn-secondary">
-        View Products →
-      </a>
+      <a href="#products" class="btn-secondary">View Products →</a>
     </div>
   </div>
   <div class="hero-right">
@@ -660,91 +539,82 @@
 
 <!-- ABOUT -->
 <section class="about" id="about">
-  <div class="about-img-wrap">
+  <div class="about-img-wrap reveal-left">
     <div class="about-img-box" style="padding:0; overflow:hidden;">
       <img src="greeting_card.jpeg" style="width:100%;height:100%;object-fit:cover;">
     </div>
   </div>
-  <div class="about-content">
+  <div class="about-content reveal-right">
     <p class="section-label">Our Story</p>
     <h2 class="section-title">We gift <em>feelings</em>,<br>not just things</h2>
     <p>Wrapped with Love 24 was born from a heartfelt belief — that the most meaningful gifts are the ones crafted from your own memories and love. We customize every piece to reflect your unique bond with the people who matter most.</p>
     <p>From delicate hair accessories to hand-painted handkerchiefs — every product is a personal story, wrapped beautifully and ready to be gifted.</p>
     <div class="about-stats">
-      <div>
-        <div class="stat-num">100%</div>
-        <div class="stat-label">Handcrafted</div>
-      </div>
-      <div>
-        <div class="stat-num">5+</div>
-        <div class="stat-label">Unique Products</div>
-      </div>
-      <div>
-        <div class="stat-num">♡</div>
-        <div class="stat-label">Made with Love</div>
-      </div>
+      <div class="reveal delay-1"><div class="stat-num">100%</div><div class="stat-label">Handcrafted</div></div>
+      <div class="reveal delay-2"><div class="stat-num">5+</div><div class="stat-label">Unique Products</div></div>
+      <div class="reveal delay-3"><div class="stat-num">♡</div><div class="stat-label">Made with Love</div></div>
     </div>
   </div>
 </section>
 
 <!-- PRODUCTS -->
 <section class="products" id="products">
-  <div class="products-header">
+  <div class="products-header reveal">
     <p class="section-label">Our Collection</p>
     <h2 class="section-title">Gifts as <em>unique</em> as your bond</h2>
   </div>
   <div class="products-grid">
 
-    <div class="product-card">
-      <div class="product-img"><img src="hair_accessories.jpeg" style="width:100%;height:100%;object-fit:cover;"></div>
+    <div class="product-card reveal delay-1">
+      <div class="product-img"><img src="hair_accessories.jpeg"></div>
       <div class="product-info">
         <div class="product-name">Hair Accessories</div>
         <div class="product-desc">Beautifully crafted hair accessories personalized to match your style — perfect for gifting someone you adore.</div>
-        <a href="https://wa.me/919404808850?text=Hi!%20I%20want%20to%20order%20a%20Hair%20Accessory%20from%20Wrapped%20with%20Love%2024%20!" target="_blank" class="product-order-btn">💬 Order Now</a>
+        <a href="https://wa.me/919404808850?text=Hi!%20I%20want%20to%20order%20a%20Hair%20Accessory%20from%20Wrapped%20with%20Love%2024%20🎀" target="_blank" class="product-order-btn">💬 Order Now</a>
       </div>
     </div>
 
-    <div class="product-card">
-      <div class="product-img"><img src="fabric_handkerchief.jpeg" style="width:100%;height:100%;object-fit:cover;"></div>
+    <div class="product-card reveal delay-2">
+      <div class="product-img"><img src="fabric_handkerchief.jpeg"></div>
       <div class="product-info">
         <div class="product-name">Fabric Painted Handkerchief</div>
         <div class="product-desc">Special handkerchiefs hand-painted with unique fabric art — a one-of-a-kind keepsake your loved one will treasure.</div>
-        <a href="https://wa.me/919404808850?text=Hi!%20I%20want%20to%20order%20a%20Fabric%20Painted%20Handkerchief%20from%20Wrapped%20with%20Love%2024%20!" target="_blank" class="product-order-btn">💬 Order Now</a>
+        <a href="https://wa.me/919404808850?text=Hi!%20I%20want%20to%20order%20a%20Fabric%20Painted%20Handkerchief%20from%20Wrapped%20with%20Love%2024%20🎨" target="_blank" class="product-order-btn">💬 Order Now</a>
       </div>
     </div>
 
-    <div class="product-card">
-      <div class="product-img"><img src="flower_embroidery.jpeg" style="width:100%;height:100%;object-fit:cover;"></div>
+    <div class="product-card reveal delay-3">
+      <div class="product-img"><img src="flower_embroidery.jpeg"></div>
       <div class="product-info">
         <div class="product-name">Flower & Name Embroidery</div>
         <div class="product-desc">Delicate flower or name embroidery crafted with precision and love — personalized art that speaks straight to the heart.</div>
-        <a href="https://wa.me/919404808850?text=Hi!%20I%20want%20to%20order%20Embroidery%20from%20Wrapped%20with%20Love%2024%20!" target="_blank" class="product-order-btn">💬 Order Now</a>
+        <a href="https://wa.me/919404808850?text=Hi!%20I%20want%20to%20order%20Embroidery%20from%20Wrapped%20with%20Love%2024%20🌸" target="_blank" class="product-order-btn">💬 Order Now</a>
       </div>
     </div>
 
-    <div class="product-card">
-      <div class="product-img"><img src="photo_keychain.jpeg" style="width:100%;height:100%;object-fit:cover;"></div>
+    <div class="product-card reveal delay-4">
+      <div class="product-img"><img src="photo_keychain.jpeg"></div>
       <div class="product-info">
         <div class="product-name">Photo Keychain</div>
         <div class="product-desc">Carry your favourite memory wherever you go. Our photo keychains keep the people you love always close.</div>
-        <a href="https://wa.me/919404808850?text=Hi!%20I%20want%20to%20order%20a%20Photo%20Keychain%20from%20Wrapped%20with%20Love%2024%20!" target="_blank" class="product-order-btn">💬 Order Now</a>
+        <a href="https://wa.me/919404808850?text=Hi!%20I%20want%20to%20order%20a%20Photo%20Keychain%20from%20Wrapped%20with%20Love%2024%20🔑" target="_blank" class="product-order-btn">💬 Order Now</a>
       </div>
     </div>
 
-    <div class="product-card">
-      <div class="product-img"><img src="cute_cards.jpeg" style="width:100%;height:100%;object-fit:cover;"></div>
+    <div class="product-card reveal delay-5">
+      <div class="product-img"><img src="cute_cards.jpeg"></div>
       <div class="product-info">
         <div class="product-name">Cute & Greeting Cards</div>
         <div class="product-desc">Handcrafted cards that say exactly what you feel — from heartfelt birthday messages to sweet little love notes.</div>
-        <a href="https://wa.me/919404808850?text=Hi!%20I%20want%20to%20order%20a%20Greeting%20Card%20from%20Wrapped%20with%20Love%2024%20!" target="_blank" class="product-order-btn">💬 Order Now</a>
+        <a href="https://wa.me/919404808850?text=Hi!%20I%20want%20to%20order%20a%20Greeting%20Card%20from%20Wrapped%20with%20Love%2024%20💌" target="_blank" class="product-order-btn">💬 Order Now</a>
       </div>
     </div>
 
-    <div class="product-card" style="background: var(--brown-dark); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:1rem; text-align:center; padding:2rem;">
+    <div class="product-card reveal delay-6" style="background: var(--brown-dark); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:1rem; text-align:center; padding:2rem;">
       <div style="font-size:2.5rem;">✨</div>
       <div style="font-family:'Playfair Display',serif; font-size:1.2rem; color:var(--brown-light); font-weight:700;">Something Custom?</div>
       <div style="font-size:0.82rem; color:rgba(245,237,224,0.55); line-height:1.6;">Have a unique idea? We love creating something truly original just for you.</div>
-      <a href="https://wa.me/919404808850?text=Hi!%20I%20have%20a%20custom%20gift%20idea%20for%20Wrapped%20with%20Love%2024%20!" target="_blank" class="product-order-btn" style="background:var(--brown-light); color:var(--brown-dark);">💬 Let's Talk</a>
+      <a href="https://wa.me/919404808850?text=Hi!%20I%20have%20a%20custom%20gift%20idea%20for%20Wrapped%20with%20Love%2024%20✨" target="_blank" class="product-order-btn" style="background:var(--brown-light); color:var(--brown-dark);">💬 Let's Talk</a>
     </div>
 
   </div>
@@ -752,52 +622,36 @@
 
 <!-- HOW IT WORKS -->
 <section class="how" id="how">
-  <div class="how-header">
+  <div class="how-header reveal">
     <p class="section-label">The Process</p>
     <h2 class="section-title">Simple as <em>sending love</em></h2>
   </div>
   <div class="steps">
-    <div class="step">
-      <div class="step-num">01</div>
-      <h3>Choose a Product</h3>
-      <p>Browse our collection and pick the gift that speaks to your heart.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">02</div>
-      <h3>Chat with Us</h3>
-      <p>Send us a WhatsApp message with your preferences, photos, and details.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">03</div>
-      <h3>We Craft It</h3>
-      <p>We handcraft your personalized gift with great care and love.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">04</div>
-      <h3>Delivered with ♡</h3>
-      <p>Your gift arrives beautifully packaged, ready to make someone smile.</p>
-    </div>
+    <div class="step reveal delay-1"><div class="step-num">01</div><h3>Choose a Product</h3><p>Browse our collection and pick the gift that speaks to your heart.</p></div>
+    <div class="step reveal delay-2"><div class="step-num">02</div><h3>Chat with Us</h3><p>Send us a WhatsApp message with your preferences, photos, and details.</p></div>
+    <div class="step reveal delay-3"><div class="step-num">03</div><h3>We Craft It</h3><p>We handcraft your personalized gift with great care and love.</p></div>
+    <div class="step reveal delay-4"><div class="step-num">04</div><h3>Delivered with ♡</h3><p>Your gift arrives beautifully packaged, ready to make someone smile.</p></div>
   </div>
 </section>
 
 <!-- TESTIMONIALS -->
 <section class="testimonials" id="testimonials">
-  <div class="testimonials-header">
+  <div class="testimonials-header reveal">
     <p class="section-label">Love Notes</p>
     <h2 class="section-title">What our customers <em>feel</em></h2>
   </div>
   <div class="testi-grid">
-    <div class="testi-card">
+    <div class="testi-card reveal delay-1">
       <div class="testi-stars">★★★★★</div>
       <div class="testi-text">"The photo keychain made my best friend cry happy tears. Wrapped with Love 24 truly understands what meaningful gifting feels like."</div>
       <div class="testi-name">— Priya R.</div>
     </div>
-    <div class="testi-card">
+    <div class="testi-card reveal delay-2">
       <div class="testi-stars">★★★★★</div>
       <div class="testi-text">"The embroidered piece was absolutely stunning. So detailed and personal — my mom keeps it on her bedside table. Worth every penny!"</div>
       <div class="testi-name">— Ananya M.</div>
     </div>
-    <div class="testi-card">
+    <div class="testi-card reveal delay-3">
       <div class="testi-stars">★★★★★</div>
       <div class="testi-text">"Ordered a card and hair accessory together. The quality was unbelievable for such a lovely price. Will definitely be ordering again!"</div>
       <div class="testi-name">— Kavya S.</div>
@@ -806,10 +660,10 @@
 </section>
 
 <!-- ORDER CTA -->
-<section class="order-cta" id="order">
+<section class="order-cta reveal" id="order">
   <h2>Ready to make someone's<br>day <em>unforgettable?</em></h2>
   <p>Just tap below — we'll help you craft the perfect gift on WhatsApp.</p>
-  <a href="https://wa.me/919404808850?text=Hi!%20I%20want%20to%20order%20a%20customized%20gift%20from%20Wrapped%20with%20Love%2024%20!" target="_blank" class="wp-btn">
+  <a href="https://wa.me/919404808850?text=Hi!%20I%20want%20to%20order%20a%20customized%20gift%20from%20Wrapped%20with%20Love%2024%20🎁" target="_blank" class="wp-btn">
     <span class="wp-icon">W</span> Order on WhatsApp
   </a>
 </section>
@@ -823,11 +677,31 @@
       <div class="footer-tagline">Gifts from the heart.</div>
     </div>
   </div>
-  <div class="footer-text">
-    📞 <a href="tel:+919404808850">+91 94048 08850</a>
-  </div>
+  <div class="footer-text">📞 <a href="tel:+919404808850">+91 94048 08850</a></div>
   <div class="footer-text">© 2026 Wrapped with Love 24. Made with ♡</div>
 </footer>
+
+<script>
+  // LOADER
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('loader').classList.add('hide');
+    }, 2300);
+  });
+
+  // SCROLL REVEAL
+  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  revealEls.forEach(el => observer.observe(el));
+</script>
 
 </body>
 </html>
